@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% from 'components/_job_card.html' import job_card %}
+{% from 'components/_service_card.html' import service_card %}
+
+{% block title %}Serviços e Profissionais — Flash{% endblock %}
+
+{% block content %}
+<section class="container section">
+  <div class="page-header">
+    <span class="eyebrow">ENCONTRE O QUE VOCÊ PRECISA</span>
+    <h1>Explorar serviços e profissionais</h1>
+    <p class="muted">
+      Pesquise profissionais qualificados com tabela de valores transparente ou navegue pelos pedidos abertos na sua cidade.
+    </p>
+  </div>
+
+  <!-- Barra de Filtros -->
+  <form class="filters" method="get" role="search" aria-label="Filtrar por categoria e cidade">
+    <input type="hidden" name="tipo" value="{{ tab }}">
+
+    <div class="filter-group">
+      <label for="filter-categoria" class="sr-only">Categoria</label>
+      <select id="filter-categoria" name="categoria" class="filter-select">
+        <option value="">Todas as categorias profissionais</option>
+        {% for c in categories %}
+          <option value="{{ c }}" {% if c == cat %}selected{% endif %}>{{ c }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label for="filter-cidade" class="sr-only">Cidade ou Região</label>
+      <input 
+        id="filter-cidade" 
+        name="cidade" 
+        value="{{ city }}" 
+        placeholder="Digite sua cidade ou bairro..." 
+        class="filter-input"
+        autocomplete="address-level2">
+    </div>
+
+    <button class="btn" type="submit">Filtrar resultados →</button>
+  </form>
+
+  <!-- Abas de Navegação entre Prestadores e Pedidos -->
+  <div class="nav-tabs-wrapper" role="tablist" aria-label="Opções de visualização">
+    <a 
+      href="{{ url_for('jobs', tipo='profissionais', categoria=cat, cidade=city) }}" 
+      class="tab-pill {% if tab == 'profissionais' %}active{% endif %}"
+      role="tab"
+      aria-selected="{{ 'true' if tab == 'profissionais' else 'false' }}">
+      🛠️ Profissionais & Serviços Oferecidos ({{ services|length }})
+    </a>
+    <a 
+      href="{{ url_for('jobs', tipo='pedidos', categoria=cat, cidade=city) }}" 
+      class="tab-pill {% if tab == 'pedidos' %}active{% endif %}"
+      role="tab"
+      aria-selected="{{ 'true' if tab == 'pedidos' else 'false' }}">
+      📋 Pedidos Publicados por Clientes ({{ jobs|length }})
+    </a>
+  </div>
+
+  <!-- Lista de Resultados Conforme a Aba Selecionada -->
+  {% if tab == 'profissionais' %}
+    <!-- Aba 1: Prestadores e Serviços Oferecidos -->
+    <div class="cards">
+      {% for s in services %}
+        {{ service_card(s) }}
+      {% else %}
+        <div class="empty-state">
+          <span class="empty-icon" aria-hidden="true">🔍</span>
+          <h3>Nenhum profissional encontrado com esses filtros</h3>
+          <p class="muted">
+            Não encontramos prestadores cadastrados para a categoria ou cidade informada. Experimente limpar os filtros.
+          </p>
+          <div class="space-top-sm">
+            <a class="btn btn-outline" href="{{ url_for('jobs', tipo='profissionais') }}">Limpar filtros de busca</a>
+            {% if me and me.role == 'profissional' %}
+              <a class="btn" href="{{ url_for('new_service_offered') }}">+ Seja o primeiro a anunciar aqui</a>
+            {% endif %}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <!-- Aba 2: Pedidos de Clientes em Aberto -->
+    <div class="cards">
+      {% for job in jobs %}
+        {{ job_card(job, show_client=true) }}
+      {% else %}
+        <div class="empty-state">
+          <span class="empty-icon" aria-hidden="true">📭</span>
+          <h3>Nenhum pedido de cliente encontrado</h3>
+          <p class="muted">Não encontramos pedidos abertos para os filtros selecionados.</p>
+          <a class="btn btn-outline" href="{{ url_for('jobs', tipo='pedidos') }}">Limpar filtros</a>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+</section>
+{% endblock %}

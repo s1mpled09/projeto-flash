@@ -1,0 +1,14 @@
+{# Macro para tags de status padronizadas com classes semânticas #}
+{% macro status_badge(status) %}
+  {% set s = status|lower %}
+  {% if s == 'aberto' %}
+    <span class="tag tag-status tag-aberto">● Aberto para propostas</span>
+  {% elif s == 'contratado' %}
+    <span class="tag tag-status tag-contratado">⚡ Em andamento</span>
+  {% elif s == 'concluido' %}
+    <span class="tag tag-status tag-concluido">✓ Concluído</span>
+  {% else %}
+    <span class="tag tag-status">{{ status|capitalize }}</span>
+  {% endif %}
+{% endmacro %}
+

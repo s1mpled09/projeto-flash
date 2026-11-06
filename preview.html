@@ -1,0 +1,403 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#6254f5">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  
+  <link rel="manifest" href="static/manifest.webmanifest">
+  <link rel="apple-touch-icon" href="static/icons/icon-192.png">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <title>Flash — Serviços sem complicação</title>
+  <link rel="stylesheet" href="static/style.css">
+  
+</head>
+<body>
+  <!-- Header / Barra de Navegação Superior -->
+  <header class="top">
+    <nav class="container nav" aria-label="Navegação principal">
+      <a class="brand" href="/" title="Ir para página inicial">
+        <span class="bolt" aria-hidden="true">ϟ</span>flash<span class="dot">.</span>
+      </a>
+
+      <div class="navlinks">
+        <a href="/servicos" class="navlink">Explorar serviços</a>
+        
+        
+          <a href="/entrar" class="navlink">Entrar</a>
+          <a class="btn btn-small" href="/cadastro">Criar conta</a>
+        
+      </div>
+    </nav>
+  </header>
+
+  <!-- Conteúdo Principal -->
+  <main id="main-content">
+    
+      
+    
+
+    
+<!-- Seção Hero Principal -->
+<section class="hero">
+  <div class="container hero-grid">
+    <div class="hero-text-block">
+      <div class="eyebrow">⚡ O jeito inteligente de contratar</div>
+      <h1>O serviço certo.<br><em>Na hora certa.</em></h1>
+      <p class="hero-description">
+        Encontre profissionais qualificados para resolver o que você precisa, compare propostas reais e acompanhe tudo em um só lugar.
+      </p>
+
+      <form class="search" action="/servicos" method="get" role="search">
+        <label for="cidade-hero" class="sr-only">Cidade</label>
+        <div class="search-input-wrapper">
+          <span class="search-icon" aria-hidden="true">📍</span>
+          <input 
+            id="cidade-hero"
+            name="cidade" 
+            placeholder="Em qual cidade você precisa de ajuda?" 
+            aria-label="Cidade para buscar serviços"
+            autocomplete="address-level2">
+        </div>
+        <button class="btn" type="submit">Encontrar serviços →</button>
+      </form>
+
+      <div class="hero-meta">
+        <span class="meta-check"><span class="check-icon">✓</span> Propostas transparentes</span>
+        <span class="meta-check"><span class="check-icon">✓</span> Avaliações verificadas</span>
+        <span class="meta-check"><span class="check-icon">✓</span> Sem taxas ocultas</span>
+      </div>
+    </div>
+
+    <div class="hero-art" aria-hidden="true">
+      <div class="art-bubble bubble1">
+        <span class="bubble-icon">⚡</span> Solicitação enviada em segundos
+      </div>
+      <div class="art-center">
+        <div class="art-icon">🛠️</div>
+        <strong>Seu próximo projeto<br>começa aqui.</strong>
+        <span>Profissionais · Confiança · Agilidade</span>
+      </div>
+      <div class="art-bubble bubble2">
+        <span class="bubble-icon">⭐</span> Profissionais avaliados
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Categorias em Destaque -->
+<section class="container section">
+  <div class="section-head">
+    <div>
+      <span class="eyebrow">O QUE VOCÊ PRECISA?</span>
+      <h2>Explore por categoria</h2>
+    </div>
+    <a href="/servicos" class="section-link">Ver todas as categorias →</a>
+  </div>
+
+  <div class="categories">
+    
+    
+      <a class="category" href="/servicos?categoria=Montagem+de+m%C3%B3veis">
+        <span class="cat-icon" aria-hidden="true">🪑</span>
+        <strong class="cat-name">Montagem de móveis</strong>
+        <small class="cat-action">Explorar pedidos →</small>
+      </a>
+    
+      <a class="category" href="/servicos?categoria=El%C3%A9trica">
+        <span class="cat-icon" aria-hidden="true">💡</span>
+        <strong class="cat-name">Elétrica</strong>
+        <small class="cat-action">Explorar pedidos →</small>
+      </a>
+    
+      <a class="category" href="/servicos?categoria=Encanamento">
+        <span class="cat-icon" aria-hidden="true">🚰</span>
+        <strong class="cat-name">Encanamento</strong>
+        <small class="cat-action">Explorar pedidos →</small>
+      </a>
+    
+      <a class="category" href="/servicos?categoria=Limpeza">
+        <span class="cat-icon" aria-hidden="true">🧹</span>
+        <strong class="cat-name">Limpeza</strong>
+        <small class="cat-action">Explorar pedidos →</small>
+      </a>
+    
+      <a class="category" href="/servicos?categoria=Pintura">
+        <span class="cat-icon" aria-hidden="true">🎨</span>
+        <strong class="cat-name">Pintura</strong>
+        <small class="cat-action">Explorar pedidos →</small>
+      </a>
+    
+      <a class="category" href="/servicos?categoria=Jardinagem">
+        <span class="cat-icon" aria-hidden="true">🌿</span>
+        <strong class="cat-name">Jardinagem</strong>
+        <small class="cat-action">Explorar pedidos →</small>
+      </a>
+    
+      <a class="category" href="/servicos?categoria=Inform%C3%A1tica">
+        <span class="cat-icon" aria-hidden="true">💻</span>
+        <strong class="cat-name">Informática</strong>
+        <small class="cat-action">Explorar pedidos →</small>
+      </a>
+    
+      <a class="category" href="/servicos?categoria=Reparos+gerais">
+        <span class="cat-icon" aria-hidden="true">🔧</span>
+        <strong class="cat-name">Reparos gerais</strong>
+        <small class="cat-action">Explorar pedidos →</small>
+      </a>
+    
+  </div>
+</section>
+
+<!-- Como Funciona (Fluxo de 3 Passos) -->
+<section class="section soft">
+  <div class="container">
+    <div class="section-head text-center">
+      <div>
+        <span class="eyebrow">SIMPLES DO INÍCIO AO FIM</span>
+        <h2>Como o Flash funciona</h2>
+      </div>
+    </div>
+
+    <div class="steps">
+      <article class="step-card">
+        <span class="step-num">01</span>
+        <h3>Conte o que precisa</h3>
+        <p>Publique seu pedido com detalhes, categoria, cidade e orçamento estimado sem nenhum custo.</p>
+      </article>
+
+      <article class="step-card">
+        <span class="step-num">02</span>
+        <h3>Compare propostas</h3>
+        <p>Receba ofertas de profissionais locais, confira avaliações anteriores e escolha o melhor custo-benefício.</p>
+      </article>
+
+      <article class="step-card">
+        <span class="step-num">03</span>
+        <h3>Conclua com segurança</h3>
+        <p>Acompanhe a realização pelo painel interativo, confirme a entrega e avalie o serviço prestado.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- Oportunidades Recentes -->
+<section class="container section">
+  <div class="section-head">
+    <div>
+      <span class="eyebrow">OPORTUNIDADES RECENTES</span>
+      <h2>Serviços disponíveis</h2>
+    </div>
+    <a href="/servicos" class="section-link">Ver todos os pedidos →</a>
+  </div>
+
+  <div class="cards">
+    
+      
+<a class="jobcard" href="/servico/1">
+  <div class="jobcard-header">
+    <span class="tag tag-aberto">Montagem de móveis</span>
+    
+  </div>
+
+  <h3 class="jobcard-title">Montar guarda-roupa casal 6 portas</h3>
+
+  <p class="jobcard-meta">
+    <span class="meta-item">📍 São Paulo</span>
+    
+      <span class="meta-item">👤 Juliana Costa</span>
+    
+  </p>
+
+  <div class="cardfoot">
+    <div class="budget-block">
+      <span class="budget-label">Orçamento</span>
+      <strong class="budget-val">R$ 180.00</strong>
+    </div>
+    <span class="jobcard-action">Ver pedido →</span>
+  </div>
+</a>
+
+    
+      
+<a class="jobcard" href="/servico/2">
+  <div class="jobcard-header">
+    <span class="tag tag-aberto">Elétrica</span>
+    
+  </div>
+
+  <h3 class="jobcard-title">Instalação de 4 luminárias de embutir</h3>
+
+  <p class="jobcard-meta">
+    <span class="meta-item">📍 Campinas</span>
+    
+      <span class="meta-item">👤 Marcos Paulo</span>
+    
+  </p>
+
+  <div class="cardfoot">
+    <div class="budget-block">
+      <span class="budget-label">Orçamento</span>
+      <strong class="budget-val">R$ 120.00</strong>
+    </div>
+    <span class="jobcard-action">Ver pedido →</span>
+  </div>
+</a>
+
+    
+      
+<a class="jobcard" href="/servico/3">
+  <div class="jobcard-header">
+    <span class="tag tag-aberto">Encanamento</span>
+    
+  </div>
+
+  <h3 class="jobcard-title">Troca de torneira e reparo em sifão</h3>
+
+  <p class="jobcard-meta">
+    <span class="meta-item">📍 São Paulo</span>
+    
+      <span class="meta-item">👤 Fernanda Lima</span>
+    
+  </p>
+
+  <div class="cardfoot">
+    <div class="budget-block">
+      <span class="budget-label">Orçamento</span>
+      <strong class="budget-val">R$ 95.00</strong>
+    </div>
+    <span class="jobcard-action">Ver pedido →</span>
+  </div>
+</a>
+
+    
+      
+<a class="jobcard" href="/servico/4">
+  <div class="jobcard-header">
+    <span class="tag tag-aberto">Limpeza</span>
+    
+  </div>
+
+  <h3 class="jobcard-title">Limpeza pós-obra de apartamento 70m²</h3>
+
+  <p class="jobcard-meta">
+    <span class="meta-item">📍 Santos</span>
+    
+      <span class="meta-item">👤 Roberto Alves</span>
+    
+  </p>
+
+  <div class="cardfoot">
+    <div class="budget-block">
+      <span class="budget-label">Orçamento</span>
+      <strong class="budget-val">R$ 320.00</strong>
+    </div>
+    <span class="jobcard-action">Ver pedido →</span>
+  </div>
+</a>
+
+    
+      
+<a class="jobcard" href="/servico/5">
+  <div class="jobcard-header">
+    <span class="tag tag-aberto">Pintura</span>
+    
+  </div>
+
+  <h3 class="jobcard-title">Pintura interna de 2 quartos e sala</h3>
+
+  <p class="jobcard-meta">
+    <span class="meta-item">📍 São Paulo</span>
+    
+      <span class="meta-item">👤 Carla Mendes</span>
+    
+  </p>
+
+  <div class="cardfoot">
+    <div class="budget-block">
+      <span class="budget-label">Orçamento</span>
+      <strong class="budget-val">R$ 850.00</strong>
+    </div>
+    <span class="jobcard-action">Ver pedido →</span>
+  </div>
+</a>
+
+    
+      
+<a class="jobcard" href="/servico/6">
+  <div class="jobcard-header">
+    <span class="tag tag-aberto">Informática</span>
+    
+  </div>
+
+  <h3 class="jobcard-title">Configuração de rede Wi-Fi e roteador mesh</h3>
+
+  <p class="jobcard-meta">
+    <span class="meta-item">📍 São José dos Campos</span>
+    
+      <span class="meta-item">👤 Lucas Andrade</span>
+    
+  </p>
+
+  <div class="cardfoot">
+    <div class="budget-block">
+      <span class="budget-label">Orçamento</span>
+      <strong class="budget-val">R$ 150.00</strong>
+    </div>
+    <span class="jobcard-action">Ver pedido →</span>
+  </div>
+</a>
+
+    
+  </div>
+</section>
+
+<!-- Call to Action Banner -->
+<section class="container cta">
+  <div class="cta-content">
+    <h2>Seu talento merece mais oportunidades.</h2>
+    <p>Cadastre seu perfil profissional, envie propostas e feche novos serviços na sua região.</p>
+  </div>
+  <a class="btn btn-light" href="/cadastro">Quero ser profissional →</a>
+</section>
+
+  </main>
+
+  <!-- Rodapé Institucional -->
+  <footer class="footer">
+    <div class="container footer-content">
+      <div class="footer-brand">
+        <span class="bolt">ϟ</span> <strong>Flash</strong> — Conectando clientes e profissionais
+      </div>
+      <p class="footer-note">Projeto acadêmico demonstrativo · Engenharia de Software</p>
+    </div>
+  </footer>
+
+  <!-- Navegação Mobile Inferior (Tabs PWA) -->
+  <nav class="mobile-tabs" aria-label="Navegação rápida">
+    <a href="/" class="tab-item">
+      <span class="tab-icon" aria-hidden="true">⌂</span>
+      <small>Início</small>
+    </a>
+    <a href="/servicos" class="tab-item">
+      <span class="tab-icon" aria-hidden="true">⌕</span>
+      <small>Explorar</small>
+    </a>
+    
+      <a href="/entrar" class="tab-item">
+        <span class="tab-icon" aria-hidden="true">♙</span>
+        <small>Entrar</small>
+      </a>
+    
+  </nav>
+
+  <script src="static/app.js" defer></script>
+  
+</body>
+</html>

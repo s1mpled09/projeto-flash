@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ service.title }} — Flash{% endblock %}
+
+{% block content %}
+<section class="container section">
+  <div class="nav-breadcrumbs">
+    <a class="back" href="{{ url_for('jobs', tipo='profissionais') }}">← Voltar para serviços e profissionais</a>
+  </div>
+
+  <div class="detail-grid">
+    <!-- Coluna Principal: Detalhes do Serviço e Tabela de Valores -->
+    <article class="panel job-main-panel">
+      <div class="job-header-meta">
+        <span class="tag tag-aberto">{{ service.category }}</span>
+        <span class="tag tag-pro-badge">Prestador Profissional</span>
+      </div>
+
+      <h1 class="job-title">{{ service.title }}</h1>
+      <p class="job-publisher-meta muted">
+        <strong>Especialidade:</strong> {{ service.area_of_expertise }} · 
+        📍 Atende em <strong>{{ service.city }}</strong> e {{ service.region }}
+      </p>
+
+      <!-- Descrição de Valores e Condições -->
+      <div class="service-pricing-highlight-box">
+        <div class="pricing-header-row">
+          <h3>💰 Tabela e Descrição de Valores</h3>
+          {% if service.base_price and service.base_price > 0 %}
+            <span class="badge-price">A partir de R$ {{ '%.2f'|format(service.base_price) }}</span>
+          {% else %}
+            <span class="badge-price">Valores Sob Consulta</span>
+          {% endif %}
+        </div>
+        <div class="pricing-details-content">
+          <pre class="pricing-pre">{{ service.pricing_details }}</pre>
+        </div>
+      </div>
+
+      <!-- Descrição Detalhada dos Serviços -->
+      <div class="job-content-section space-top-sm">
+        <h3>Sobre a prestação deste serviço</h3>
+        <p class="description">{{ service.description }}</p>
+      </div>
+
+      <!-- Região de Atendimento -->
+      <div class="job-summary-box">
+        <div class="summary">
+          <span>Cidade Principal</span>
+          <strong>{{ service.city }}</strong>
+        </div>
+        <div class="summary">
+          <span>Região e Bairros de Cobertura</span>
+          <strong>{{ service.region }}</strong>
+        </div>
+        <div class="summary">
+          <span>Profissional Responsável</span>
+          <strong>{{ service.professional_name }}</strong>
+        </div>
+      </div>
+    </article>
+
+    <!-- Coluna Lateral: Dados do Prestador e Contratação -->
+    <aside class="panel proposals-aside">
+      <div class="pro-summary-card">
+        <div class="avatar avatar-sm" aria-hidden="true">{{ service.professional_name[0]|upper }}</div>
+        <div>
+          <h3>{{ service.professional_name }}</h3>
+          <p class="muted tiny">📍 {{ service.professional_city }}</p>
+        </div>
+      </div>
+
+      <div class="summary">
+        <span>Avaliação dos Clientes</span>
+        <strong class="highlight-val">
+          {% if service.avg_rating and service.avg_rating > 0 %}
+            ⭐ {{ service.avg_rating }}/5 ({{ service.total_reviews }})
+          {% else %}
+            Novo profissional
+          {% endif %}
+        </strong>
+      </div>
+
+      <div class="pro-actions space-top-sm">
+        <a class="btn btn-outline full" href="{{ url_for('professional_profile', user_id=service.professional_id) }}">
+          Ver perfil completo e reputação →
+        </a>
+
+        {% if me and me.role == 'cliente' %}
+          <div class="space-top-sm">
+            <a class="btn full" href="{{ url_for('new_job') }}">
+              + Publicar pedido nesta categoria
+            </a>
+            <p class="muted tiny text-center space-top-sm">
+              Ao publicar seu pedido, este profissional poderá enviar uma proposta rápida para você!
+            </p>
+          </div>
+        {% elif not me %}
+          <div class="space-top-sm">
+            <a class="btn full" href="{{ url_for('login') }}">
+              Entre na sua conta para contratar
+            </a>
+          </div>
+        {% endif %}
+      </div>
+
+      <!-- Avaliações Recentes -->
+      {% if reviews %}
+        <div class="space-top">
+          <h4>Últimas avaliações recebidas</h4>
+          {% for r in reviews %}
+            <div class="proposal">
+              <strong class="review-stars">⭐ {{ r.rating }}/5 · {{ r.category }}</strong>
+              <p class="proposal-body">"{{ r.comment }}"</p>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </aside>
+  </div>
+</section>
+{% endblock %}
+

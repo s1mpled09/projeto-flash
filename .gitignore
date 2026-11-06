@@ -1,0 +1,27 @@
+# Node / Capacitor
+node_modules/
+npm-debug.log
+
+# Ambientes Virtuais
+.venv/
+venv/
+env/
+ENV/
+
+# Python Bytecode & Cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Banco de Dados Local (opcional, manter caso queira banco inicial ou ignorar)
+# flash.db
+
+# Sistema Operacional e IDEs
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Variáveis de Ambiente
+.env
+

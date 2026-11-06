@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block title %}Conversa: {{ job.title }} — Flash{% endblock %}
+
+{% block content %}
+<section class="container section">
+  <div class="nav-breadcrumbs">
+    <a class="back" href="{{ url_for('job_detail', job_id=job.id) }}">← Voltar aos detalhes do serviço</a>
+  </div>
+
+  <div class="panel chat-panel">
+    <div class="chat-header">
+      <span class="eyebrow">CANAL PRIVADO DE COMUNICAÇÃO</span>
+      <h1 class="chat-job-title">{{ job.title }}</h1>
+      <p class="muted">
+        🔒 Mensagens visíveis exclusivamente entre o cliente contratante e o profissional designado.
+      </p>
+    </div>
+
+    <!-- Área de Mensagens (Chatlog) -->
+    <div class="chatlog" id="chat-messages" role="log" aria-live="polite">
+      {% for m in messages %}
+        <div class="bubble {{ 'mine' if m.sender_id == me.id else 'theirs' }}">
+          <div class="bubble-sender">
+            <strong>{{ 'Você' if m.sender_id == me.id else m.sender }}</strong>
+          </div>
+          <p class="bubble-text">{{ m.body }}</p>
+          <small class="bubble-time">{{ m.created_at }}</small>
+        </div>
+      {% else %}
+        <div class="empty-state chat-empty">
+          <span class="empty-icon" aria-hidden="true">💬</span>
+          <p class="muted">Nenhuma mensagem trocada ainda. Combine aqui datas, detalhes e instruções de execução!</p>
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- Formulário de Envio de Mensagem -->
+    <form class="stack chat-input-form" method="post">
+      <input type="hidden" name="csrf" value="{{ csrf }}">
+      <div class="form-group">
+        <label for="chat-body" class="sr-only">Nova mensagem</label>
+        <textarea 
+          id="chat-body"
+          name="body" 
+          maxlength="1500" 
+          required 
+          rows="3" 
+          placeholder="Escreva sua mensagem para combinar os detalhes do serviço..."></textarea>
+      </div>
+      <div class="chat-actions">
+        <button class="btn" type="submit">Enviar mensagem →</button>
+      </div>
+    </form>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+  // Rolar automaticamente para a mensagem mais recente ao carregar
+  const chatLog = document.getElementById('chat-messages');
+  if (chatLog) {
+    chatLog.scrollTop = chatLog.scrollHeight;
+  }
+</script>
+{% endblock %}

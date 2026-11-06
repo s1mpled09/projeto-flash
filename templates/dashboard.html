@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+{% from 'components/_job_card.html' import job_card %}
+{% from 'components/_service_card.html' import service_card %}
+
+{% block title %}Meu Painel — Flash{% endblock %}
+
+{% block content %}
+<section class="container section">
+  <div class="section-head dashboard-header">
+    <div>
+      <span class="eyebrow">ÁREA DO {{ me.role|upper }}</span>
+      <h1>Olá, {{ me.name }} 👋</h1>
+      <p class="muted">Gerencie suas solicitações, acompanhe propostas e controle seus atendimentos.</p>
+    </div>
+    <div class="dashboard-actions">
+      {% if me.role == 'cliente' %}
+        <a class="btn" href="{{ url_for('new_job') }}">+ Publicar novo pedido</a>
+      {% else %}
+        <a class="btn" href="{{ url_for('new_service_offered') }}">+ Cadastrar serviço que ofereço</a>
+        <a class="btn btn-outline" href="{{ url_for('jobs', tipo='pedidos') }}">Ver pedidos de clientes</a>
+      {% endif %}
+    </div>
+  </div>
+
+  {% if me.role == 'profissional' %}
+    <!-- Seção de Gestão do Prestador: Serviços Oferecidos e Tabela de Valores -->
+    <div class="dashboard-block">
+      <div class="section-head block-title-row">
+        <div>
+          <span class="eyebrow">MEUS ANÚNCIOS PROFISSIONAIS</span>
+          <h2>Serviços que ofereço e tabela de valores</h2>
+        </div>
+        <a class="btn btn-small" href="{{ url_for('new_service_offered') }}">+ Novo serviço</a>
+      </div>
+
+      <div class="cards">
+        {% for s in my_services %}
+          {{ service_card(s, is_owner=true, csrf=csrf) }}
+        {% else %}
+          <div class="empty-state">
+            <span class="empty-icon" aria-hidden="true">🛠️</span>
+            <h3>Você ainda não cadastrou nenhum serviço oferecido</h3>
+            <p class="muted">
+              Cadastre sua profissão, área de atuação, região de atendimento e descrição de valores para que os clientes da sua cidade possam encontrar você diretamente!
+            </p>
+            <a class="btn" href="{{ url_for('new_service_offered') }}">+ Cadastrar meu primeiro serviço</a>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  {% endif %}
+
+  <!-- Seção de Pedidos / Oportunidades -->
+  <div class="dashboard-block {% if me.role == 'profissional' %}space-top{% endif %}">
+    <div class="block-title-row">
+      <h2>{{ 'Meus pedidos publicados' if me.role == 'cliente' else 'Oportunidades abertas em ' ~ me.city }}</h2>
+    </div>
+
+    <div class="cards">
+      {% for job in jobs %}
+        {{ job_card(job, show_client=(me.role == 'profissional')) }}
+      {% else %}
+        <div class="empty-state">
+          <span class="empty-icon" aria-hidden="true">📭</span>
+          <h3>Nenhum pedido listado</h3>
+          <p class="muted">
+            {% if me.role == 'cliente' %}
+              Você ainda não publicou pedidos de serviço.
+            {% else %}
+              Não encontramos pedidos abertos para a sua cidade no momento.
+            {% endif %}
+          </p>
+          {% if me.role == 'cliente' %}
+            <a class="btn btn-small" href="{{ url_for('new_job') }}">Criar primeiro pedido</a>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Seção de Propostas Enviadas (Apenas para Profissionais) -->
+  {% if me.role == 'profissional' %}
+    <div class="dashboard-block space-top">
+      <div class="block-title-row">
+        <h2>Minhas propostas enviadas</h2>
+      </div>
+
+      <div class="cards">
+        {% for p in proposals %}
+          <a class="jobcard proposal-card" href="{{ url_for('job_detail', job_id=p.job_id) }}">
+            <div class="jobcard-header">
+              <span class="tag tag-status tag-status-{{ p.status }}">{{ p.status|capitalize }}</span>
+            </div>
+            <h3 class="jobcard-title">{{ p.title }}</h3>
+            <p class="proposal-quote">
+              <span class="muted">Sua proposta:</span>
+              <strong class="proposal-val">R$ {{ '%.2f'|format(p.amount) }}</strong>
+            </p>
+            <div class="cardfoot">
+              <span class="jobcard-action">Ver detalhes do serviço →</span>
+            </div>
+          </a>
+        {% else %}
+          <div class="empty-state">
+            <span class="empty-icon" aria-hidden="true">💼</span>
+            <h3>Nenhuma proposta enviada</h3>
+            <p class="muted">Você ainda não enviou propostas para nenhum pedido de cliente.</p>
+            <a class="btn btn-small" href="{{ url_for('jobs', tipo='pedidos') }}">Buscar pedidos abertos</a>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  {% endif %}
+</section>
+{% endblock %}

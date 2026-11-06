@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}Você está offline — Flash{% endblock %}
+
+{% block content %}
+<section class="section">
+  <div class="container narrow panel offline-panel text-center">
+    <div class="offline-icon" aria-hidden="true">📡</div>
+    <span class="eyebrow">SEM CONEXÃO DE REDE</span>
+    <h1>Você está offline</h1>
+    <p class="muted">
+      Conecte-se à internet para buscar novos serviços, enviar orçamentos ou acompanhar contratações ativas. Seus dados privados e mensagens requerem conexão ativa por segurança.
+    </p>
+    <div class="offline-actions space-top">
+      <a class="btn" href="{{ url_for('index') }}">Tentar novamente</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

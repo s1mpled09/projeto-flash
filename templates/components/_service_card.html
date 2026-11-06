@@ -1,0 +1,56 @@
+{# Macro de Card de Serviço Oferecido por Prestador #}
+{% macro service_card(s, is_owner=false, csrf=none) %}
+<div class="jobcard service-card">
+  <div class="jobcard-header">
+    <span class="tag tag-aberto">{{ s.category }}</span>
+    <span class="tag tag-pro-badge">Prestador Profissional</span>
+  </div>
+
+  <h3 class="jobcard-title">{{ s.title }}</h3>
+
+  <p class="service-area-text">
+    <strong>Especialidade:</strong> {{ s.area_of_expertise }}
+  </p>
+
+  <p class="jobcard-meta">
+    <span class="meta-item">📍 {{ s.city }} ({{ s.region }})</span>
+    {% if s.professional_name %}
+      <span class="meta-item">👤 {{ s.professional_name }}</span>
+    {% endif %}
+    {% if s.avg_rating is defined and s.avg_rating > 0 %}
+      <span class="meta-item rating-star">⭐ {{ s.avg_rating }} ({{ s.total_reviews }})</span>
+    {% endif %}
+  </p>
+
+  <div class="service-pricing-snippet">
+    <span class="pricing-label">Valores e Condições:</span>
+    <p class="pricing-preview-text">{{ s.pricing_details|truncate(90, true, '...') }}</p>
+  </div>
+
+  <div class="cardfoot">
+    <div class="budget-block">
+      <span class="budget-label">Preço base</span>
+      <strong class="budget-val">
+        {% if s.base_price and s.base_price > 0 %}
+          A partir de R$ {{ '%.2f'|format(s.base_price) }}
+        {% else %}
+          Sob Consulta
+        {% endif %}
+      </strong>
+    </div>
+
+    <div class="cardfoot-actions">
+      <a class="btn btn-small" href="{{ url_for('service_detail', service_id=s.id) }}">
+        Ver detalhes e valores →
+      </a>
+      {% if is_owner and csrf %}
+        <form method="post" action="{{ url_for('delete_service_offered', service_id=s.id) }}" class="inline-form" onsubmit="return confirm('Deseja realmente remover este serviço oferecido?');">
+          <input type="hidden" name="csrf" value="{{ csrf }}">
+          <button class="linkbtn btn-text-danger" type="submit" title="Excluir serviço cadastrado">Excluir</button>
+        </form>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endmacro %}
+

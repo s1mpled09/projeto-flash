@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  {{ 'Criar Conta' if mode == 'cadastro' else 'Entrar na Conta' }} — Flash
+{% endblock %}
+
+{% block content %}
+<section class="container narrow section">
+  <div class="panel auth-panel">
+    <div class="panel-header">
+      <span class="eyebrow">BEM-VINDO AO FLASH</span>
+      <h1>{{ 'Crie sua conta' if mode == 'cadastro' else 'Entre na sua conta' }}</h1>
+      <p class="muted">
+        {{ 'Comece em poucos minutos para contratar ou oferecer serviços.' if mode == 'cadastro' else 'Acesse seus serviços, propostas e conversas.' }}
+      </p>
+    </div>
+
+    <form method="post" class="stack" novalidate>
+      <input type="hidden" name="csrf" value="{{ csrf }}">
+
+      {% if mode == 'cadastro' %}
+        <div class="form-group">
+          <label for="name">Nome completo</label>
+          <input 
+            id="name" 
+            name="name" 
+            required 
+            maxlength="90" 
+            placeholder="Ex.: Maria Souza"
+            autocomplete="name">
+        </div>
+
+        <div class="form-group">
+          <label for="city">Cidade</label>
+          <input 
+            id="city" 
+            name="city" 
+            required 
+            maxlength="100" 
+            placeholder="Ex.: Belém"
+            autocomplete="address-level2">
+        </div>
+
+        <div class="form-group">
+          <label for="role">Quero usar o Flash como</label>
+          <select id="role" name="role" required>
+            <option value="cliente">Cliente — quero contratar serviços</option>
+            <option value="profissional">Profissional — quero oferecer serviços</option>
+          </select>
+        </div>
+      {% endif %}
+
+      <div class="form-group">
+        <label for="email">E-mail</label>
+        <input 
+          id="email" 
+          name="email" 
+          type="email" 
+          required 
+          placeholder="voce@email.com"
+          autocomplete="email">
+      </div>
+
+      <div class="form-group">
+        <label for="password">Senha</label>
+        <input 
+          id="password" 
+          name="password" 
+          type="password" 
+          required 
+          minlength="8" 
+          placeholder="Mínimo de 8 caracteres"
+          autocomplete="{{ 'new-password' if mode == 'cadastro' else 'current-password' }}">
+        {% if mode == 'cadastro' %}
+          <small class="field-hint">A senha deve ter no mínimo 8 caracteres.</small>
+        {% endif %}
+      </div>
+
+      <button class="btn full" type="submit">
+        {{ 'Criar minha conta' if mode == 'cadastro' else 'Entrar na plataforma' }}
+      </button>
+    </form>
+
+    <div class="auth-switch">
+      {% if mode == 'cadastro' %}
+        <p class="muted">Já possui uma conta? <a href="{{ url_for('login') }}" class="inline-link">Entre aqui</a></p>
+      {% else %}
+        <p class="muted">Ainda não tem conta no Flash? <a href="{{ url_for('register') }}" class="inline-link">Cadastre-se grátis</a></p>
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% endblock %}

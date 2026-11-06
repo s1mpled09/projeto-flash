@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block title %}Novo Pedido de Serviço — Flash{% endblock %}
+
+{% block content %}
+<section class="container narrow section">
+  <div class="panel">
+    <div class="panel-header">
+      <a class="back-link" href="{{ url_for('dashboard') }}">← Voltar ao painel</a>
+      <span class="eyebrow">NOVO PEDIDO</span>
+      <h1>Qual serviço você precisa?</h1>
+      <p class="muted">Descreva bem sua necessidade para que profissionais qualificados enviem orçamentos precisos.</p>
+    </div>
+
+    <form method="post" class="stack">
+      <input type="hidden" name="csrf" value="{{ csrf }}">
+
+      <div class="form-group">
+        <label for="title">Título do pedido</label>
+        <input 
+          id="title"
+          name="title" 
+          required 
+          maxlength="110" 
+          placeholder="Ex.: Montar guarda-roupa de 6 portas com gavetas">
+        <small class="field-hint">Seja claro e específico sobre o que deve ser feito.</small>
+      </div>
+
+      <div class="form-group">
+        <label for="category">Categoria do serviço</label>
+        <select id="category" name="category" required>
+          {% for cat in categories %}
+            <option value="{{ cat }}">{{ cat }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="description">Descrição detalhada</label>
+        <textarea 
+          id="description"
+          name="description" 
+          required 
+          minlength="15" 
+          maxlength="2000" 
+          rows="5" 
+          placeholder="Explique os detalhes do serviço, dimensões, ferramentas necessárias ou prazos desejados..."></textarea>
+        <small class="field-hint">Mínimo de 15 caracteres para garantir clareza.</small>
+      </div>
+
+      <div class="form-group">
+        <label for="city">Cidade onde o serviço será realizado</label>
+        <input 
+          id="city"
+          name="city" 
+          required 
+          value="{{ me.city }}" 
+          maxlength="100" 
+          placeholder="Ex.: São Paulo">
+      </div>
+
+      <div class="form-group">
+        <label for="budget">Orçamento estimado (R$)</label>
+        <input 
+          id="budget"
+          name="budget" 
+          type="number" 
+          step="0.01" 
+          min="1" 
+          max="1000000" 
+          required 
+          placeholder="250,00">
+        <small class="field-hint">Valor de referência que você pretende investir.</small>
+      </div>
+
+      <button class="btn full" type="submit">Publicar pedido gratuitamente →</button>
+    </form>
+  </div>
+</section>
+{% endblock %}

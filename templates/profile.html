@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+
+{% block title %}Perfil de {{ person.name }} — Flash{% endblock %}
+
+{% block content %}
+<section class="container section">
+  <div class="nav-breadcrumbs">
+    <a class="back" href="{{ url_for('jobs', tipo='profissionais') }}">← Explorar profissionais</a>
+  </div>
+
+  <div class="panel profile">
+    <div class="profile-header">
+      <span class="avatar" aria-hidden="true">{{ person.name[0]|upper }}</span>
+      <div class="profile-info">
+        <span class="eyebrow">PERFIL PROFISSIONAL</span>
+        <h1 class="profile-name">{{ person.name }}</h1>
+        <p class="muted profile-location">📍 {{ person.city }}</p>
+      </div>
+    </div>
+
+    <!-- Indicadores de Desempenho / Estatísticas -->
+    <div class="profile-stats-grid">
+      <div class="summary">
+        <span>Avaliação média dos clientes</span>
+        <strong class="highlight-val">
+          {{ stats.average or 'Ainda sem avaliações' }}
+          {% if stats.average %} ⭐{% endif %}
+        </strong>
+      </div>
+      <div class="summary">
+        <span>Total de serviços avaliados</span>
+        <strong>{{ stats.total }}</strong>
+      </div>
+    </div>
+
+    <!-- Serviços Oferecidos por este Profissional -->
+    <div class="space-top">
+      <h2>Serviços oferecidos e valores</h2>
+      <div class="profile-services-list">
+        {% for s in services %}
+          <div class="service-offered-box">
+            <div class="jobcard-header">
+              <span class="tag tag-aberto">{{ s.category }}</span>
+              {% if s.base_price and s.base_price > 0 %}
+                <span class="badge-price">A partir de R$ {{ '%.2f'|format(s.base_price) }}</span>
+              {% else %}
+                <span class="badge-price">Sob consulta</span>
+              {% endif %}
+            </div>
+
+            <h3>{{ s.title }}</h3>
+            <p class="service-area-text">
+              <strong>Especialidade:</strong> {{ s.area_of_expertise }} · 
+              📍 Região de atendimento: <strong>{{ s.region }}</strong>
+            </p>
+
+            <div class="service-pricing-snippet">
+              <span class="pricing-label">Descrição de valores e condições:</span>
+              <pre class="pricing-pre">{{ s.pricing_details }}</pre>
+            </div>
+
+            <p class="description tiny">{{ s.description }}</p>
+
+            <div class="cardfoot-actions space-top-sm">
+              <a class="btn btn-small" href="{{ url_for('service_detail', service_id=s.id) }}">
+                Ver detalhes completos do serviço →
+              </a>
+            </div>
+          </div>
+        {% else %}
+          <p class="muted empty-note">Este profissional ainda não detalhou serviços oferecidos no perfil.</p>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Avaliações dos Clientes -->
+    <div class="profile-reviews-section space-top">
+      <h2>Avaliações de clientes</h2>
+
+      <div class="reviews-list">
+        {% for r in reviews %}
+          <div class="proposal review-item">
+            <div class="cardfoot">
+              <strong class="review-stars">⭐ {{ r.rating }}/5</strong>
+              <span class="tag tag-category">{{ r.category }}</span>
+            </div>
+            <p class="review-body">"{{ r.comment }}"</p>
+          </div>
+        {% else %}
+          <p class="muted empty-note">Este profissional ainda não recebeu avaliações.</p>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="profile-notice-box space-top">
+      <p class="muted tiny">
+        ℹ️ A verificação de antecedentes e identidade deste perfil ainda é autodeclarada nesta versão demonstrativa.
+      </p>
+    </div>
+  </div>
+</section>
+{% endblock %}

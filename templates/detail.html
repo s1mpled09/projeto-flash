@@ -1,0 +1,247 @@
+{% extends 'base.html' %}
+{% from 'components/_status_tag.html' import status_badge %}
+
+{% block title %}{{ job.title }} — Flash{% endblock %}
+
+{% block content %}
+<section class="container section">
+  <div class="nav-breadcrumbs">
+    <a class="back" href="{{ url_for('jobs') }}">← Voltar aos serviços</a>
+  </div>
+
+  <div class="detail-grid">
+    <!-- Coluna Principal: Informações do Pedido e Acompanhamento -->
+    <article class="panel job-main-panel">
+      <div class="job-header-meta">
+        <span class="tag tag-{{ job.status or 'aberto' }}">{{ job.category }}</span>
+        {{ status_badge(job.status) }}
+      </div>
+
+      <h1 class="job-title">{{ job.title }}</h1>
+      <p class="job-publisher-meta muted">
+        📍 {{ job.city }} · Publicado por <strong>{{ job.client_name }}</strong>
+      </p>
+
+      <div class="job-content-section">
+        <h3>Sobre o serviço</h3>
+        <p class="description">{{ job.description }}</p>
+      </div>
+
+      <div class="job-summary-box">
+        <div class="summary">
+          <span>Orçamento estimado</span>
+          <strong class="highlight-val">R$ {{ '%.2f'|format(job.budget) }}</strong>
+        </div>
+        <div class="summary">
+          <span>Situação atual</span>
+          <strong>{{ job.status|capitalize }}</strong>
+        </div>
+      </div>
+
+      <!-- Workspace de Acompanhamento Seguro (Visível para contratante e contratado) -->
+      {% if me and job.status != 'aberto' and (me.id == job.client_id or me.id == assigned_id) %}
+        <div class="workspace">
+          <div class="workspace-header">
+            <h3>🛡️ Acompanhamento Seguro da Execução</h3>
+            <span class="badge-safe">Transação Protegida</span>
+          </div>
+          <p class="muted">
+            O Flash conecta você ao profissional com transparência. Combine detalhes e pagamentos diretamente com o parceiro contratado.
+          </p>
+
+          <div class="workspace-actions">
+            <a class="btn btn-outline" href="{{ url_for('conversation', job_id=job.id) }}">
+              💬 Abrir conversa privada do serviço
+            </a>
+          </div>
+
+          {% if job.status == 'contratado' %}
+            <div class="execution-status">
+              <span class="status-indicator-dot"></span>
+              <p class="muted">
+                <strong>Status de Execução:</strong> 
+                {{ 'Profissional informou a conclusão — aguardando aprovação do cliente.' if progress_record and progress_record.professional_done else 'Serviço em andamento com o profissional contratado.' }}
+              </p>
+            </div>
+
+            <!-- Ação do Profissional: Notificar Conclusão -->
+            {% if me.id == assigned_id and not (progress_record and progress_record.professional_done) %}
+              <form method="post" action="{{ url_for('finish_work', job_id=job.id) }}" class="workspace-form-action">
+                <input type="hidden" name="csrf" value="{{ csrf }}">
+                <button class="btn btn-outline" type="submit">✓ Informar que terminei o serviço</button>
+              </form>
+            {% endif %}
+
+            <!-- Relato de Problemas / Contestação -->
+            {% if dispute_record %}
+              <div class="notice error">
+                <strong>Contestação aberta:</strong> {{ dispute_record.reason }}
+              </div>
+            {% else %}
+              <details class="dispute-accordion">
+                <summary>Precisa relatar um problema com este serviço?</summary>
+                <form class="stack space-top-sm" method="post" action="{{ url_for('dispute', job_id=job.id) }}">
+                  <input type="hidden" name="csrf" value="{{ csrf }}">
+                  <label for="dispute-reason">Descreva o ocorrido</label>
+                  <textarea 
+                    id="dispute-reason" 
+                    name="reason" 
+                    minlength="15" 
+                    maxlength="1000" 
+                    required 
+                    rows="3" 
+                    placeholder="Explique o motivo da contestação com no mínimo 15 caracteres..."></textarea>
+                  <button class="btn btn-outline btn-danger" type="submit">Abrir contestação formal</button>
+                </form>
+              </details>
+            {% endif %}
+          {% endif %}
+        </div>
+      {% endif %}
+
+      <!-- Conclusão Definitiva pelo Cliente -->
+      {% if me and me.role == 'cliente' and me.id == job.client_id and job.status == 'contratado' %}
+        <div class="completion-box">
+          <form method="post" action="{{ url_for('complete', job_id=job.id) }}">
+            <input type="hidden" name="csrf" value="{{ csrf }}">
+            <button 
+              class="btn full" 
+              type="submit"
+              {% if not progress_record or not progress_record.professional_done or dispute_record %}
+                disabled 
+                title="Aguarde o profissional finalizar a execução e certifique-se de que não há contestações pendentes"
+              {% endif %}>
+              Confirmar conclusão do serviço
+            </button>
+          </form>
+          <p class="muted tiny text-center">
+            A confirmação encerra o pedido e habilita o formulário de avaliação do profissional.
+          </p>
+        </div>
+      {% endif %}
+
+      <!-- Avaliação Pós-Conclusão -->
+      {% if me and me.role == 'cliente' and me.id == job.client_id and job.status == 'concluido' and not review %}
+        <div class="review-box space-top">
+          <h3>Avaliar profissional</h3>
+          <p class="muted">Ajude a comunidade Flash compartilhando sua experiência com o serviço realizado.</p>
+          <form class="stack" method="post" action="{{ url_for('review', job_id=job.id) }}">
+            <input type="hidden" name="csrf" value="{{ csrf }}">
+            <div class="form-group">
+              <label for="review-rating">Sua nota de avaliação</label>
+              <select id="review-rating" name="rating">
+                {% for n in range(5, 0, -1) %}
+                  <option value="{{ n }}">{{ '⭐ ' * n }} ({{ n }} estrela{{ 's' if n > 1 else '' }})</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="review-comment">Comentário sobre o atendimento</label>
+              <textarea 
+                id="review-comment" 
+                name="comment" 
+                required 
+                minlength="5" 
+                rows="3" 
+                placeholder="Conte o que achou da pontualidade, qualidade e comunicação..."></textarea>
+            </div>
+            <button class="btn" type="submit">Publicar avaliação pública</button>
+          </form>
+        </div>
+      {% endif %}
+
+      <!-- Exibição de Avaliação Concluída -->
+      {% if review %}
+        <div class="completed-review space-top">
+          <h4>Avaliação registrada pelo cliente</h4>
+          <div class="review-card">
+            <span class="stars-display">⭐ {{ review.rating }}/5</span>
+            <p class="review-text">"{{ review.comment }}"</p>
+          </div>
+        </div>
+      {% endif %}
+    </article>
+
+    <!-- Barra Lateral: Propostas e Envio -->
+    <aside class="panel proposals-aside">
+      <h2>Propostas</h2>
+      <p class="muted">Compare orçamentos e mensagens antes de escolher um profissional.</p>
+
+      <!-- Formulário para envio de proposta (Profissional) -->
+      {% if me and me.role == 'profissional' and job.status == 'aberto' %}
+        <form class="stack proposal-form" method="post" action="{{ url_for('propose', job_id=job.id) }}">
+          <input type="hidden" name="csrf" value="{{ csrf }}">
+          <div class="form-group">
+            <label for="proposal-amount">Seu preço proposto (R$)</label>
+            <input 
+              id="proposal-amount" 
+              type="number" 
+              step="0.01" 
+              min="1" 
+              name="amount" 
+              required 
+              placeholder="Ex.: 180,00">
+          </div>
+          <div class="form-group">
+            <label for="proposal-msg">Mensagem ao cliente</label>
+            <textarea 
+              id="proposal-msg" 
+              name="message" 
+              required 
+              minlength="10" 
+              maxlength="1000" 
+              rows="4" 
+              placeholder="Apresente sua experiência, disponibilidade de horários e ferramentas disponíveis..."></textarea>
+          </div>
+          <button class="btn full" type="submit">Enviar proposta gratuita →</button>
+        </form>
+        <hr class="divider">
+      {% endif %}
+
+      <!-- Lista de Propostas Recebidas/Enviadas -->
+      {% if me and (me.id == job.client_id or me.role == 'profissional') %}
+        <div class="proposals-list">
+          {% for p in proposals %}
+            {% if me.id == job.client_id or me.id == p.professional_id %}
+              <div class="proposal {% if job.hired_proposal_id == p.id %}proposal-hired{% endif %}">
+                <div class="cardfoot">
+                  <strong>
+                    <a href="{{ url_for('professional_profile', user_id=p.professional_id) }}" class="pro-link" title="Ver perfil do profissional">
+                      {{ p.professional_name }} ↗
+                    </a>
+                  </strong>
+                  <b class="proposal-price">R$ {{ '%.2f'|format(p.amount) }}</b>
+                </div>
+
+                <div class="proposal-rating">
+                  <small class="muted">
+                    ⭐ {{ p.avg_rating if p.avg_rating else 'Novo profissional' }}
+                  </small>
+                </div>
+
+                <p class="proposal-body">{{ p.message }}</p>
+
+                {% if job.hired_proposal_id == p.id %}
+                  <span class="tag tag-status tag-contratado">Contratado ✓</span>
+                {% elif me.id == job.client_id and job.status == 'aberto' %}
+                  <form method="post" action="{{ url_for('hire', job_id=job.id, proposal_id=p.id) }}" class="hire-form">
+                    <input type="hidden" name="csrf" value="{{ csrf }}">
+                    <button class="btn btn-small" type="submit">Escolher profissional</button>
+                  </form>
+                {% endif %}
+              </div>
+            {% endif %}
+          {% else %}
+            <p class="muted empty-note">Nenhuma proposta visível para este pedido ainda.</p>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="auth-gate">
+          <p class="muted">Entre na sua conta para visualizar orçamentos ou enviar propostas.</p>
+          <a class="btn" href="{{ url_for('login') }}">Fazer login</a>
+        </div>
+      {% endif %}
+    </aside>
+  </div>
+</section>
+{% endblock %}

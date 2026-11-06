@@ -1,0 +1,29 @@
+{# Macro de Card de Serviço reutilizável #}
+{% macro job_card(job, show_client=false) %}
+<a class="jobcard" href="{{ url_for('job_detail', job_id=job.id) }}">
+  <div class="jobcard-header">
+    <span class="tag tag-{{ job.status or 'aberto' }}">{{ job.category }}</span>
+    {% if job.status and job.status != 'aberto' %}
+      <span class="tag tag-status tag-status-{{ job.status }}">{{ job.status|capitalize }}</span>
+    {% endif %}
+  </div>
+
+  <h3 class="jobcard-title">{{ job.title }}</h3>
+
+  <p class="jobcard-meta">
+    <span class="meta-item">📍 {{ job.city }}</span>
+    {% if show_client and job.client_name %}
+      <span class="meta-item">👤 {{ job.client_name }}</span>
+    {% endif %}
+  </p>
+
+  <div class="cardfoot">
+    <div class="budget-block">
+      <span class="budget-label">Orçamento</span>
+      <strong class="budget-val">R$ {{ '%.2f'|format(job.budget) }}</strong>
+    </div>
+    <span class="jobcard-action">Ver pedido →</span>
+  </div>
+</a>
+{% endmacro %}
+

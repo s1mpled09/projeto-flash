@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+{% from 'components/_job_card.html' import job_card %}
+
+{% block content %}
+<!-- Seção Hero Principal -->
+<section class="hero">
+  <div class="container hero-grid">
+    <div class="hero-text-block">
+      <div class="eyebrow">⚡ O jeito inteligente de contratar</div>
+      <h1>O serviço certo.<br><em>Na hora certa.</em></h1>
+      <p class="hero-description">
+        Encontre profissionais qualificados para resolver o que você precisa, compare propostas reais e acompanhe tudo em um só lugar.
+      </p>
+
+      <form class="search" action="{{ url_for('jobs') }}" method="get" role="search">
+        <label for="cidade-hero" class="sr-only">Cidade</label>
+        <div class="search-input-wrapper">
+          <span class="search-icon" aria-hidden="true">📍</span>
+          <input 
+            id="cidade-hero"
+            name="cidade" 
+            placeholder="Em qual cidade você precisa de ajuda?" 
+            aria-label="Cidade para buscar serviços"
+            autocomplete="address-level2">
+        </div>
+        <button class="btn" type="submit">Encontrar serviços →</button>
+      </form>
+
+      <div class="hero-meta">
+        <span class="meta-check"><span class="check-icon">✓</span> Propostas transparentes</span>
+        <span class="meta-check"><span class="check-icon">✓</span> Avaliações verificadas</span>
+        <span class="meta-check"><span class="check-icon">✓</span> Sem taxas ocultas</span>
+      </div>
+    </div>
+
+    <div class="hero-art" aria-hidden="true">
+      <div class="art-bubble bubble1">
+        <span class="bubble-icon">⚡</span> Solicitação enviada em segundos
+      </div>
+      <div class="art-center">
+        <div class="art-icon">🛠️</div>
+        <strong>Seu próximo projeto<br>começa aqui.</strong>
+        <span>Profissionais · Confiança · Agilidade</span>
+      </div>
+      <div class="art-bubble bubble2">
+        <span class="bubble-icon">⭐</span> Profissionais avaliados
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Categorias em Destaque -->
+<section class="container section">
+  <div class="section-head">
+    <div>
+      <span class="eyebrow">O QUE VOCÊ PRECISA?</span>
+      <h2>Explore por categoria</h2>
+    </div>
+    <a href="{{ url_for('jobs') }}" class="section-link">Ver todas as categorias →</a>
+  </div>
+
+  <div class="categories">
+    {% set icons = ['🪑', '💡', '🚰', '🧹', '🎨', '🌿', '💻', '🔧'] %}
+    {% for category in categories %}
+      <a class="category" href="{{ url_for('jobs', categoria=category) }}">
+        <span class="cat-icon" aria-hidden="true">{{ icons[loop.index0] if loop.index0 < icons|length else '🔧' }}</span>
+        <strong class="cat-name">{{ category }}</strong>
+        <small class="cat-action">Explorar pedidos →</small>
+      </a>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- Como Funciona (Fluxo de 3 Passos) -->
+<section class="section soft">
+  <div class="container">
+    <div class="section-head text-center">
+      <div>
+        <span class="eyebrow">SIMPLES DO INÍCIO AO FIM</span>
+        <h2>Como o Flash funciona</h2>
+      </div>
+    </div>
+
+    <div class="steps">
+      <article class="step-card">
+        <span class="step-num">01</span>
+        <h3>Conte o que precisa</h3>
+        <p>Publique seu pedido com detalhes, categoria, cidade e orçamento estimado sem nenhum custo.</p>
+      </article>
+
+      <article class="step-card">
+        <span class="step-num">02</span>
+        <h3>Compare propostas</h3>
+        <p>Receba ofertas de profissionais locais, confira avaliações anteriores e escolha o melhor custo-benefício.</p>
+      </article>
+
+      <article class="step-card">
+        <span class="step-num">03</span>
+        <h3>Conclua com segurança</h3>
+        <p>Acompanhe a realização pelo painel interativo, confirme a entrega e avalie o serviço prestado.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- Oportunidades Recentes -->
+<section class="container section">
+  <div class="section-head">
+    <div>
+      <span class="eyebrow">OPORTUNIDADES RECENTES</span>
+      <h2>Serviços disponíveis</h2>
+    </div>
+    <a href="{{ url_for('jobs') }}" class="section-link">Ver todos os pedidos →</a>
+  </div>
+
+  <div class="cards">
+    {% for job in jobs %}
+      {{ job_card(job, show_client=true) }}
+    {% else %}
+      <div class="empty-state">
+        <span class="empty-icon" aria-hidden="true">📋</span>
+        <p>Ainda não há pedidos publicados no momento. Seja o primeiro a publicar!</p>
+        <a class="btn btn-small" href="{{ url_for('new_job') if me and me.role == 'cliente' else url_for('register') }}">
+          Publicar primeiro pedido
+        </a>
+      </div>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- Call to Action Banner -->
+<section class="container cta">
+  <div class="cta-content">
+    <h2>Seu talento merece mais oportunidades.</h2>
+    <p>Cadastre seu perfil profissional, envie propostas e feche novos serviços na sua região.</p>
+  </div>
+  <a class="btn btn-light" href="{{ url_for('register') }}">Quero ser profissional →</a>
+</section>
+{% endblock %}
