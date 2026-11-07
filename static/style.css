@@ -324,28 +324,55 @@ textarea:focus-visible {
 .brand {
   display: inline-flex;
   align-items: center;
-  gap: 2px;
+  gap: 5px;
   font-family: var(--font-display);
   font-size: 1.85rem;
   font-weight: 800;
   letter-spacing: -0.04em;
   color: var(--color-text-main);
+  text-decoration: none;
 }
 
-.bolt {
-  font-size: 2.1rem;
-  color: #f59e0b;
+.brand-text {
   line-height: 1;
-  filter: drop-shadow(0 2px 8px rgba(245, 158, 11, 0.45));
-  transition: transform var(--transition-fast);
 }
 
-.brand:hover .bolt {
-  transform: scale(1.12) rotate(-6deg);
+.brand-bolt {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
 }
 
-.dot {
-  color: #f59e0b;
+.brand-bolt-svg {
+  width: 25px;
+  height: 25px;
+  display: block;
+  filter: drop-shadow(0 2px 7px rgba(245, 158, 11, 0.5));
+  transition: transform var(--transition-fast), filter var(--transition-fast);
+}
+
+.brand:hover .brand-bolt-svg {
+  transform: scale(1.18) rotate(7deg);
+  filter: drop-shadow(0 4px 14px rgba(245, 158, 11, 0.75));
+}
+
+.footer-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.footer-bolt {
+  display: inline-flex;
+  align-items: center;
+}
+
+.footer-bolt-svg {
+  width: 17px;
+  height: 17px;
+  display: block;
+  filter: drop-shadow(0 1px 4px rgba(245, 158, 11, 0.4));
 }
 
 .navlinks {
@@ -1714,6 +1741,11 @@ textarea {
 
   .brand {
     font-size: 1.55rem;
+  }
+
+  .brand-bolt-svg {
+    width: 21px;
+    height: 21px;
   }
 
   .hero-art {
