@@ -16,7 +16,19 @@
   
   <title>Flash — Serviços sem complicação</title>
   <link rel="stylesheet" href="static/style.css">
-  
+  <script>
+    (function() {
+      try {
+        var saved = localStorage.getItem('flash-theme');
+        var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (saved === 'dark' || (!saved && prefersDark)) {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        } else {
+          document.documentElement.setAttribute('data-theme', 'light');
+        }
+      } catch (e) {}
+    })();
+  </script>
 </head>
 <body>
   <!-- Header / Barra de Navegação Superior -->
@@ -39,13 +51,27 @@
         </span>
       </a>
 
-      <div class="navlinks">
-        <a href="/servicos" class="navlink">Explorar serviços</a>
-        
-        
+      <div class="nav-actions-group">
+        <!-- Botão de Acesso Rápido ao Modo Escuro / Claro -->
+        <button id="theme-toggle" class="theme-toggle-btn" type="button" aria-label="Alternar modo escuro" title="Alternar entre modo claro e modo escuro" aria-pressed="false">
+          <span class="theme-toggle-track">
+            <svg class="theme-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="4"/>
+              <path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41m14.14-14.14l-1.41 1.41"/>
+            </svg>
+            <svg class="theme-icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+            </svg>
+            <span class="theme-toggle-thumb"></span>
+          </span>
+          <span class="theme-toggle-label">Modo Escuro</span>
+        </button>
+
+        <div class="navlinks">
+          <a href="/servicos" class="navlink">Explorar serviços</a>
           <a href="/entrar" class="navlink">Entrar</a>
           <a class="btn btn-small" href="/cadastro">Criar conta</a>
-        
+        </div>
       </div>
     </nav>
   </header>

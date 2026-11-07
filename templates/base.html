@@ -15,7 +15,20 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   
   <title>{% block title %}Flash — Serviços sem complicação{% endblock %}</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=4.1">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=4.2">
+  <script>
+    (function() {
+      try {
+        var saved = localStorage.getItem('flash-theme');
+        var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (saved === 'dark' || (!saved && prefersDark)) {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        } else {
+          document.documentElement.setAttribute('data-theme', 'light');
+        }
+      } catch (e) {}
+    })();
+  </script>
   {% block extra_head %}{% endblock %}
 </head>
 <body>
@@ -39,23 +52,40 @@
         </span>
       </a>
 
-      <div class="navlinks">
-        <a href="{{ url_for('jobs') }}" class="navlink">Explorar serviços</a>
-        
-        {% if me %}
-          <a href="{{ url_for('dashboard') }}" class="navlink">Meu painel</a>
-          <div class="nav-user-badge">
-            <span class="nav-user-role">{{ me.role|capitalize }}</span>
-            <span class="nav-user-name">{{ me.name.split(' ')[0] }}</span>
-          </div>
-          <form method="post" action="{{ url_for('logout') }}" class="inline-form">
-            <input type="hidden" name="csrf" value="{{ csrf }}">
-            <button class="linkbtn" type="submit" title="Encerrar sessão">Sair</button>
-          </form>
-        {% else %}
-          <a href="{{ url_for('login') }}" class="navlink">Entrar</a>
-          <a class="btn btn-small" href="{{ url_for('register') }}">Criar conta</a>
-        {% endif %}
+      <div class="nav-actions-group">
+        <!-- Botão de Acesso Rápido ao Modo Escuro / Claro -->
+        <button id="theme-toggle" class="theme-toggle-btn" type="button" aria-label="Alternar modo escuro" title="Alternar entre modo claro e modo escuro" aria-pressed="false">
+          <span class="theme-toggle-track">
+            <svg class="theme-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="4"/>
+              <path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41m14.14-14.14l-1.41 1.41"/>
+            </svg>
+            <svg class="theme-icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+            </svg>
+            <span class="theme-toggle-thumb"></span>
+          </span>
+          <span class="theme-toggle-label">Modo Escuro</span>
+        </button>
+
+        <div class="navlinks">
+          <a href="{{ url_for('jobs') }}" class="navlink">Explorar serviços</a>
+          
+          {% if me %}
+            <a href="{{ url_for('dashboard') }}" class="navlink">Meu painel</a>
+            <div class="nav-user-badge">
+              <span class="nav-user-role">{{ me.role|capitalize }}</span>
+              <span class="nav-user-name">{{ me.name.split(' ')[0] }}</span>
+            </div>
+            <form method="post" action="{{ url_for('logout') }}" class="inline-form">
+              <input type="hidden" name="csrf" value="{{ csrf }}">
+              <button class="linkbtn" type="submit" title="Encerrar sessão">Sair</button>
+            </form>
+          {% else %}
+            <a href="{{ url_for('login') }}" class="navlink">Entrar</a>
+            <a class="btn btn-small" href="{{ url_for('register') }}">Criar conta</a>
+          {% endif %}
+        </div>
       </div>
     </nav>
   </header>

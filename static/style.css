@@ -119,6 +119,65 @@
 }
 
 /* --------------------------------------------------------------------------
+   DESIGN TOKENS — MODO ESCURO (DARK MODE)
+   -------------------------------------------------------------------------- */
+[data-theme="dark"] {
+  /* Cores da Marca em Modo Escuro (Amarelo Neon/Dourado Eletrizante) */
+  --color-primary: #fbbf24;
+  --color-primary-hover: #f59e0b;
+  --color-primary-active: #d97706;
+  --color-primary-light: rgba(251, 191, 36, 0.12);
+  --color-primary-dark: #fde047;
+  --color-primary-text: #090d16;
+
+  --color-secondary: #f8fafc;
+  --color-secondary-light: #1e293b;
+
+  --color-yellow: #fbbf24;
+  --color-yellow-bright: #fde047;
+  --color-yellow-light: rgba(251, 191, 36, 0.12);
+  --color-yellow-dark: #fde047;
+  --color-yellow-border: rgba(251, 191, 36, 0.3);
+
+  --color-dark-brand: #090d16;
+  --color-dark-surface: #111827;
+
+  --gradient-brand: linear-gradient(135deg, #fde047 0%, #f59e0b 100%);
+  --gradient-brand-hover: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  --gradient-hero: linear-gradient(135deg, #090d16 0%, #0f172a 50%, #161f33 100%);
+  --gradient-card: linear-gradient(145deg, #0f172a 0%, #1a2234 100%);
+  --gradient-yellow-soft: linear-gradient(135deg, rgba(251, 191, 36, 0.15) 0%, rgba(245, 158, 11, 0.08) 100%);
+
+  /* Neutros & Superfícies no Escuro */
+  --color-bg-body: #090d16;
+  --color-bg-surface: #111827;
+  --color-bg-soft: #161f30;
+  --color-bg-muted: #1e293b;
+  --color-bg-subtle: #0d1322;
+  
+  /* Linhas & Bordas no Escuro */
+  --color-border: #1e293b;
+  --color-border-subtle: #172033;
+  --color-border-hover: #334155;
+  --color-border-focus: #fbbf24;
+
+  /* Tipografia & Contraste no Escuro */
+  --color-text-main: #f8fafc;
+  --color-text-body: #cbd5e1;
+  --color-text-muted: #94a3b8;
+  --color-text-subtle: #64748b;
+  --color-text-white: #ffffff;
+
+  /* Elevação e Sombras no Escuro */
+  --shadow-xs: 0 1px 3px rgba(0, 0, 0, 0.4);
+  --shadow-sm: 0 4px 14px rgba(0, 0, 0, 0.45);
+  --shadow-md: 0 10px 28px rgba(0, 0, 0, 0.55);
+  --shadow-lg: 0 20px 45px rgba(0, 0, 0, 0.65);
+  --shadow-brand: 0 10px 28px rgba(245, 158, 11, 0.3);
+  --focus-ring: 0 0 0 3px rgba(251, 191, 36, 0.35);
+}
+
+/* --------------------------------------------------------------------------
    2. RESET MODERNO & ESTILOS BASE
    -------------------------------------------------------------------------- */
 *, *::before, *::after {
@@ -137,6 +196,7 @@ body {
   line-height: 1.6;
   color: var(--color-text-body);
   background-color: var(--color-bg-body);
+  transition: background-color var(--transition-normal), color var(--transition-normal);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -311,7 +371,11 @@ textarea:focus-visible {
   position: sticky;
   top: 0;
   z-index: 50;
-  transition: box-shadow var(--transition-fast);
+  transition: box-shadow var(--transition-fast), background-color var(--transition-normal), border-color var(--transition-normal);
+}
+
+[data-theme="dark"] .top {
+  background-color: rgba(9, 13, 22, 0.92);
 }
 
 .nav {
@@ -319,6 +383,96 @@ textarea:focus-visible {
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+.nav-actions-group {
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+}
+
+/* Botão de Alternância de Tema (Modo Escuro / Claro) */
+.theme-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--color-bg-surface);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-full);
+  padding: 4px 12px 4px 5px;
+  cursor: pointer;
+  color: var(--color-text-main);
+  font-family: var(--font-sans);
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  transition: all var(--transition-fast);
+  box-shadow: var(--shadow-xs);
+  user-select: none;
+}
+
+.theme-toggle-btn:hover {
+  border-color: #f59e0b;
+  box-shadow: 0 2px 12px rgba(245, 158, 11, 0.25);
+}
+
+.theme-toggle-track {
+  width: 44px;
+  height: 24px;
+  background: #e2e8f0;
+  border-radius: var(--radius-full);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 5px;
+  transition: background var(--transition-normal);
+  flex-shrink: 0;
+}
+
+[data-theme="dark"] .theme-toggle-track {
+  background: #1e293b;
+}
+
+.theme-icon-sun, .theme-icon-moon {
+  width: 13px;
+  height: 13px;
+  z-index: 1;
+  transition: opacity var(--transition-fast), color var(--transition-fast);
+}
+
+.theme-icon-sun {
+  color: #f59e0b;
+}
+
+.theme-icon-moon {
+  color: #94a3b8;
+}
+
+[data-theme="dark"] .theme-icon-moon {
+  color: #fbbf24;
+}
+
+.theme-toggle-thumb {
+  position: absolute;
+  left: 2px;
+  top: 2px;
+  width: 20px;
+  height: 20px;
+  background: #ffffff;
+  border-radius: 50%;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+  transition: transform var(--transition-normal), background var(--transition-normal);
+}
+
+[data-theme="dark"] .theme-toggle-thumb {
+  transform: translateX(20px);
+  background: #fbbf24;
+  box-shadow: 0 1px 6px rgba(251, 191, 36, 0.5);
+}
+
+.theme-toggle-label {
+  letter-spacing: 0.02em;
+  white-space: nowrap;
 }
 
 .brand {
@@ -1721,6 +1875,18 @@ textarea {
     font-weight: 700;
   }
 
+  .nav-actions-group {
+    gap: var(--space-2);
+  }
+
+  .theme-toggle-btn {
+    padding: 4px 5px;
+  }
+
+  .theme-toggle-label {
+    display: none;
+  }
+
   .navlinks .btn {
     display: none;
   }
@@ -1790,4 +1956,208 @@ textarea {
     flex-direction: column;
     align-items: flex-start;
   }
+}
+
+/* --------------------------------------------------------------------------
+   DARK THEME OVERRIDES (COMPONENTES ESPECÍFICOS)
+   -------------------------------------------------------------------------- */
+[data-theme="dark"] .navlink:hover {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .art-bubble {
+  background: rgba(17, 24, 39, 0.96);
+  color: #f8fafc;
+  border-color: rgba(251, 191, 36, 0.35);
+}
+
+[data-theme="dark"] .cat-icon-wrapper {
+  background: #161f30;
+  border-color: #283548;
+  color: #fbbf24;
+}
+
+[data-theme="dark"] .category:hover .cat-icon-wrapper {
+  background: rgba(251, 191, 36, 0.22);
+  border-color: #fbbf24;
+  color: #fde047;
+  box-shadow: 0 4px 18px rgba(251, 191, 36, 0.35);
+}
+
+[data-theme="dark"] .category:hover {
+  border-color: #fbbf24;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="dark"] .category:hover .cat-action {
+  color: #fde047;
+}
+
+[data-theme="dark"] .step-card {
+  background: #111827;
+  border-color: #1e293b;
+}
+
+[data-theme="dark"] .step-card:hover {
+  border-color: #fbbf24;
+}
+
+[data-theme="dark"] .step-num {
+  background: rgba(251, 191, 36, 0.15);
+  border-color: rgba(251, 191, 36, 0.35);
+  color: #fbbf24;
+}
+
+[data-theme="dark"] .jobcard:hover {
+  border-color: #fbbf24;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.45);
+}
+
+[data-theme="dark"] .jobcard:hover .jobcard-action {
+  color: #fbbf24;
+}
+
+[data-theme="dark"] .tag-status-contratado,
+[data-theme="dark"] .tag-contratado {
+  background: #1e293b;
+  color: #f8fafc;
+  border-color: #334155;
+}
+
+[data-theme="dark"] .tag-pro-badge {
+  background: #090d16;
+  color: #fbbf24;
+  border-color: rgba(251, 191, 36, 0.3);
+}
+
+[data-theme="dark"] .tab-pill {
+  background: #161f30;
+  border-color: #283548;
+  color: #94a3b8;
+}
+
+[data-theme="dark"] .tab-pill:hover {
+  background: rgba(251, 191, 36, 0.15);
+  border-color: #fbbf24;
+  color: #fbbf24;
+}
+
+[data-theme="dark"] .tab-pill.active {
+  background: #fbbf24;
+  color: #090d16;
+  border-color: #fbbf24;
+  box-shadow: 0 4px 16px rgba(251, 191, 36, 0.3);
+}
+
+[data-theme="dark"] input,
+[data-theme="dark"] select,
+[data-theme="dark"] textarea {
+  background-color: #111827;
+  border-color: #283548;
+  color: #f8fafc;
+}
+
+[data-theme="dark"] input:hover,
+[data-theme="dark"] select:hover,
+[data-theme="dark"] textarea:hover {
+  border-color: #475569;
+}
+
+[data-theme="dark"] input:focus,
+[data-theme="dark"] select:focus,
+[data-theme="dark"] textarea:focus {
+  border-color: #fbbf24;
+  box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.35);
+}
+
+[data-theme="dark"] input::placeholder {
+  color: #64748b;
+}
+
+[data-theme="dark"] .btn-light {
+  background: #161f30;
+  color: #f8fafc;
+  border: 1px solid #283548;
+}
+
+[data-theme="dark"] .btn-light:hover {
+  background: #1e293b;
+  border-color: #fbbf24;
+  color: #fbbf24;
+}
+
+[data-theme="dark"] .btn-outline {
+  border-color: #334155 !important;
+  color: #f8fafc !important;
+}
+
+[data-theme="dark"] .btn-outline:hover {
+  border-color: #fbbf24 !important;
+  background: rgba(251, 191, 36, 0.12) !important;
+  color: #fbbf24 !important;
+}
+
+[data-theme="dark"] .workspace {
+  background: rgba(251, 191, 36, 0.08);
+  border-color: rgba(251, 191, 36, 0.25);
+}
+
+[data-theme="dark"] .service-pricing-snippet {
+  background: #161f30;
+}
+
+[data-theme="dark"] .service-pricing-highlight-box {
+  background: rgba(251, 191, 36, 0.08);
+  border-color: rgba(251, 191, 36, 0.25);
+}
+
+[data-theme="dark"] .pricing-pre {
+  background: #111827;
+  border-color: #1e293b;
+  color: #f8fafc;
+}
+
+[data-theme="dark"] .job-summary-box {
+  background: #161f30;
+}
+
+[data-theme="dark"] .chatlog {
+  background: #0d1322;
+  border-color: #1e293b;
+}
+
+[data-theme="dark"] .bubble {
+  background: #161f30;
+  border-color: #283548;
+  color: #f8fafc;
+}
+
+[data-theme="dark"] .bubble.mine {
+  background: rgba(251, 191, 36, 0.16);
+  border-color: rgba(251, 191, 36, 0.38);
+  color: #f8fafc;
+}
+
+[data-theme="dark"] .bubble-sender {
+  color: #fbbf24;
+}
+
+[data-theme="dark"] .mobile-tabs {
+  background: rgba(9, 13, 22, 0.96);
+  border-top-color: #1e293b;
+}
+
+[data-theme="dark"] .tab-item {
+  color: #64748b;
+}
+
+[data-theme="dark"] .tab-item:hover,
+[data-theme="dark"] .tab-item.active {
+  color: #fbbf24;
+}
+
+[data-theme="dark"] .footer {
+  background: #090d16;
+  border-top-color: #1e293b;
+  color: #64748b;
 }
