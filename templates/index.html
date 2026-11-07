@@ -1,12 +1,13 @@
 {% extends 'base.html' %}
 {% from 'components/_job_card.html' import job_card %}
+{% from 'components/_category_icon.html' import category_icon %}
 
 {% block content %}
 <!-- Seção Hero Principal -->
 <section class="hero">
   <div class="container hero-grid">
     <div class="hero-text-block">
-      <div class="eyebrow">⚡ O jeito inteligente de contratar</div>
+      <div class="eyebrow"><span class="eyebrow-badge">⚡ NOVO</span> O jeito inteligente de contratar</div>
       <h1>O serviço certo.<br><em>Na hora certa.</em></h1>
       <p class="hero-description">
         Encontre profissionais qualificados para resolver o que você precisa, compare propostas reais e acompanhe tudo em um só lugar.
@@ -15,7 +16,12 @@
       <form class="search" action="{{ url_for('jobs') }}" method="get" role="search">
         <label for="cidade-hero" class="sr-only">Cidade</label>
         <div class="search-input-wrapper">
-          <span class="search-icon" aria-hidden="true">📍</span>
+          <span class="search-icon" aria-hidden="true">
+            <svg class="search-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+              <circle cx="12" cy="10" r="3"/>
+            </svg>
+          </span>
           <input 
             id="cidade-hero"
             name="cidade" 
@@ -38,7 +44,11 @@
         <span class="bubble-icon">⚡</span> Solicitação enviada em segundos
       </div>
       <div class="art-center">
-        <div class="art-icon">🛠️</div>
+        <div class="art-icon-box">
+          <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+          </svg>
+        </div>
         <strong>Seu próximo projeto<br>começa aqui.</strong>
         <span>Profissionais · Confiança · Agilidade</span>
       </div>
@@ -60,10 +70,9 @@
   </div>
 
   <div class="categories">
-    {% set icons = ['🪑', '💡', '🚰', '🧹', '🎨', '🌿', '💻', '🔧'] %}
     {% for category in categories %}
       <a class="category" href="{{ url_for('jobs', categoria=category) }}">
-        <span class="cat-icon" aria-hidden="true">{{ icons[loop.index0] if loop.index0 < icons|length else '🔧' }}</span>
+        {{ category_icon(category, size=24) }}
         <strong class="cat-name">{{ category }}</strong>
         <small class="cat-action">Explorar pedidos →</small>
       </a>

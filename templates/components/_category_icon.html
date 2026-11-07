@@ -1,0 +1,59 @@
+{# Macro de Ícones Minimalistas de Categorias #}
+{% macro category_icon(name, size=24, class_name="") %}
+  {% set n = name|lower|trim %}
+  <span class="cat-icon-wrapper {{ class_name }}" aria-hidden="true">
+    {% if 'móve' in n or 'move' in n or 'montagem' in n %}
+      {# Montagem de móveis: Cadeira moderna / mobiliário minimalista #}
+      <svg class="cat-svg-icon" width="{{ size }}" height="{{ size }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M19 9V6a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v3"/>
+        <path d="M5 13v-4h14v4a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2z"/>
+        <path d="M6 15v5"/>
+        <path d="M18 15v5"/>
+      </svg>
+    {% elif 'elétr' in n or 'eletr' in n %}
+      {# Elétrica: Raio / Energia elétrico minimalista #}
+      <svg class="cat-svg-icon" width="{{ size }}" height="{{ size }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+      </svg>
+    {% elif 'encan' in n or 'hidr' in n %}
+      {# Encanamento: Gota d'água fluida minimalista #}
+      <svg class="cat-svg-icon" width="{{ size }}" height="{{ size }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>
+        <path d="M12 12v3"/>
+      </svg>
+    {% elif 'limp' in n or 'faxin' in n %}
+      {# Limpeza: Brilho e frescor minimalista #}
+      <svg class="cat-svg-icon" width="{{ size }}" height="{{ size }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3z"/>
+        <path d="M5 3v4"/>
+        <path d="M3 5h4"/>
+      </svg>
+    {% elif 'pint' in n %}
+      {# Pintura: Rolo de pintura minimalista #}
+      <svg class="cat-svg-icon" width="{{ size }}" height="{{ size }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <rect width="16" height="6" x="4" y="2" rx="2"/>
+        <path d="M10 8v4a2 2 0 0 0 2 2h4a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-2"/>
+        <path d="M12 20v2"/>
+      </svg>
+    {% elif 'jard' in n or 'paisag' in n %}
+      {# Jardinagem: Broto botânico minimalista #}
+      <svg class="cat-svg-icon" width="{{ size }}" height="{{ size }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M7 20h10"/>
+        <path d="M12 20v-8"/>
+        <path d="M12 12c0-3.5 3-6 7-6-1 4-3.5 6-7 6z"/>
+        <path d="M12 14c0-3.5-3-5.5-7-5.5 1 4 3.5 5.5 7 5.5z"/>
+      </svg>
+    {% elif 'info' in n or 'comp' in n or 'téc' in n or 'tec' in n %}
+      {# Informática: Notebook / Tela minimalista #}
+      <svg class="cat-svg-icon" width="{{ size }}" height="{{ size }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="4" width="18" height="12" rx="2"/>
+        <path d="M2 20h20"/>
+      </svg>
+    {% else %}
+      {# Reparos gerais / Outros: Chave de precisão minimalista #}
+      <svg class="cat-svg-icon" width="{{ size }}" height="{{ size }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+      </svg>
+    {% endif %}
+  </span>
+{% endmacro %}
